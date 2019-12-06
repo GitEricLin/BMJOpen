@@ -33,7 +33,8 @@ def main():
     #ExperimentIV(x,y,xgbm,rfm,lrm)
     #ExperimentV(x,y,xgbm,rfm,lrm)
     #ExperimentVI(x,y,xgbm,rfm,lrm)
-    ExperimentVII(xgbm,rfm,lrm)
+    #ExperimentVII(xgbm,rfm,lrm)
+    #ExperimentVIII(x,y,xgbm,rfm,lrm)
 
 def InputData():
     dataset=pd.read_csv(os.getcwd()+'\\Dataset.csv')
@@ -247,6 +248,47 @@ def ExperimentVII(xgbm,rfm,lrm):
     plt.plot(fpr,tpr,'G',label='LogisticRegression (AUC:%0.3F)'%roc_auc,linestyle=':')
     plt.legend(loc='lower right',frameon=False)
     plt.show()
+    
+def ExperimentVIII(x,y,xgbm,rfm,lrm):
+    """
+    x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+    fig,ax=plt.subplots(1,1,figsize=(10,10))
+    xgbm=xgbm.fit(x_train,y_train)
+    explainer=sp.TreeExplainer(xgbm)
+    shap_values=explainer.shap_values(x_test)
+    sp.summary_plot(shap_values,x_test,max_display=30)
+    plt.show()
+    rfm=rfm.fit(x_train,y_train)
+    explainer=sp.TreeExplainer(rfm)
+    shap_values=explainer.shap_values(x_test)
+    sp.summary_plot(shap_values,x_test,max_display=30)
+    plt.show()
+    """
+    dataset=pd.read_csv(os.getcwd()+'\\Dataset.csv')
+    try:
+        with tqdm(range(2,len(dataset.columns))) as bar:
+            ftName=[]
+            for i in bar:
+                dataset[dataset.columns[i]]=dataset[dataset.columns[i]].fillna(dataset[dataset.columns[i]].mean())
+                ftName.append(dataset.columns[i])
+    except KeyboardInterrupt:
+        bar.close()
+        raise
+    bar.close()
+    x=dataset[['No','Mortality_30days','PSI','CumuD_4_balance','PaO2/FiO2','SteroidDay0_5_3groups','EarlyECMO',
+        'APACHEII','D2Balance','D4input','BMI','Day0__PEEP',
+        'Day0__Peak','D2input','ECMO','BUN','Na',
+        'Cough','K','2nd bacterial complication','Vasopressor_3days','D3output',
+        'D3input','Fever','Pltk','Hb','Day0__TV_PBW',
+        'CRP','D2output','Age','Cr','Sex']]
+    y=dataset[['No','Mortality_30days','PSI','APACHEII','D2output','CumuD_4_balance','CRP',
+        'D2Balance','sBPst90','BUN','ECMO','Day0__TV_PBW',
+        'K','Cr','SteroidDay0_5_3groups','HR','BMI',
+        'Na','D3input','EarlyECMO','D2input','Age',
+        'Day0__FiO2','PaO2/FiO2','WBC','Day0__PEEP','FreshHD',
+        'Pltk','Hb','D4input','1st dose Tamiflu','Flu_A']]
+    x.to_csv(os.getcwd()+'//Dataset for HL-test (XGB Top-30).csv',index=False)
+    y.to_csv(os.getcwd()+'//Dataset for HL-test (RF Top-30).csv',index=False)
 
 # --------------------------------------------------
 # Source: https://github.com/yandexdataschool/roc_comparison/blob/master/compare_auc_delong_xu.py
