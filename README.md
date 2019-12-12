@@ -1,5 +1,6 @@
 # BMJOpen
-BMJ Open - Article “Predicting Mortality in Critically Ill Influenza Patients using an Extreme Gradient Boosting Model: a Multicentre Study in Taiwan"
+BMJ Open - Article "Using a Machine Learning Approach to Predict Mortality in Critically Ill Influenza Patients: a Cross-sectional
+Retrospective Multicentre Study in Taiwan"
 
 
 Experiment_Code: Source codes for the 3 machiine models, XGBoost, RandomForest, and Logistic Regression
